@@ -27,7 +27,7 @@ struct Point {
     Point() : x(0), y(0) {}
     Point(int a, int b) : x(a), y(b) {}
 };
-
+/* //方法一(Time Limit Exceeded)： 每来一点，先遍历之前所有的直线判断在哪些直线，然后再遍历之前的点构造直线，遍历整个空间后得到所有的直线以及该直线上的点数，再寻找最大的直线
 class Solution {
 private:
 //	vector<int> point_number_on_the_line;
@@ -96,6 +96,43 @@ public:
 		}
 
 		return max_point_num;
+	}
+};
+*/
+/*
+* 方法2： 计算过每点的每条线上的点数
+*/
+class Solution {
+public:
+	int maxPoints(vector<Point> &points) {
+		int globe_max_point = 0, line_max_point = 0, line_point = 0;
+		int point_index = 0, point_num = points.size(), cur_point_index = 0, test_point_index = 0;    
+
+		if(point_num < 2){
+			globe_max_point = 0;
+		}else if(point_num == 2){
+			globe_max_point = 2;
+		}else{
+			for(point_index	= 0; point_index < point_num - 2; point_index++){
+				line_max_point = 0;
+				for(cur_point_index = point_index + 1; cur_point_index < point_num - 1; cur_point_index++){
+					line_point = 2;
+					for(test_point_index = cur_point_index + 1; test_point_index < point_num; test_point_index++){
+						if((points[point_index].y - points[cur_point_index].y)*(points[point_index].x - points[cur_point_index].x) == (points[point_index].y - points[test_point_index].y)*(points[point_index].x - points[test_point_index].x)){
+							line_point++;
+						}
+					}
+					if(line_max_point < line_point){
+						line_max_point = line_point;
+					}
+				}
+				if(globe_max_point < line_max_point){
+					globe_max_point = line_max_point;
+				}
+			}
+		}
+
+	return globe_max_point;	
 	}
 };
 
