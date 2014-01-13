@@ -33,79 +33,18 @@ public:
 		return len;
 	}
 
-	int partition(ListNode *&head, int begin_index, int end_index){
-    /*
-		int index = 0;
-		ListNode *base_node = head;
-		ListNode *search_node = NULL, *save_node = NULL;
-		ListNode *pre_node = NULL, *pre_save_node = NULL;
-		ListNode *tmp_node = NULL;
-   
-		int save_index = 0;
-
-		while(index < begin_index){
-			pre_node  = base_node;
-			base_node = base_node->next;
-			index++;
-		}
-		index      = begin_index;
-		search_node = base_node;
-        
-		save_node  = base_node;
-		save_index = begin_index;
-
-		while(index < end_index){
-			if(base_node->val >= search_node->next->val){
-                tmp_node = save_node->next;
-				save_node->next = search_node->next;
-				search_node->next = tmp_node;
-
-				tmp_node = save_node->next->next;
-				save_node->next->next = search_node->next->next;
-				search_node->next->next = tmp_node;
-				
-				pre_save_node = save_node;
-				save_node = save_node->next;
-				save_index++;
-			}
-            search_node = search_node->next;
-			index++;
-		}
-		
-		if(begin_index == 0){
-            if(pre_save_node != NULL){
-                pre_save_node->next = base_node;
-                tmp_node = base_node->next;
-                base_node->next = save_node->next;
-                save_node->next = tmp_node;
-                head = save_node;
-            }
-		}else{
-            if(pre_save_node != NULL){
-                pre_save_node->next = base_node;
-                pre_node->next = save_node;
-
-                tmp_node = save_node->next;
-                save_node->next = base_node->next;;
-                base_node->next = tmp_node;
-            }
-		}
-     */
+	int partition(ListNode *head, int end_index){
         int index = 0;
 		ListNode *base_node = head;
 		ListNode *search_node = NULL, *save_node = NULL;
         
 		int save_index = 0;
         int tmp = 0;
-		while(index < begin_index){
-			base_node = base_node->next;
-			index++;
-		}
-		index      = begin_index+1;
+		index      = 1;
 		search_node = base_node->next;
         
 		save_node  = base_node;
-		save_index = begin_index;
+		save_index = 0;
         while(index <= end_index){
             if(base_node->val >= search_node->val){
                 tmp = save_node->next->val;
@@ -124,19 +63,26 @@ public:
 		return save_index;
 	}
 
-	void quick_sort(ListNode *&head, int begin_index, int end_index){
+	void quick_sort(ListNode *head, int end_index){
 		int index = 0;
+		int i = 0;
+		ListNode *cur_node = NULL;
 
-		if(begin_index < end_index){
-			index = partition(head, begin_index, end_index);
-			quick_sort(head, begin_index, index - 1);
-			quick_sort(head, index+1, end_index);
+		if(0 < end_index){
+			index = partition(head, end_index);
+			quick_sort(head, index - 1);
+			cur_node = head;
+			for(i = 0; i <= index; i++){
+				cur_node = cur_node->next;
+			}
+			quick_sort(cur_node, end_index-index-1);
+
 		}
 	}
 
 	ListNode *sortList(ListNode *head){
 		int len = GetLen(head);
-		quick_sort(head, 0, len-1);
+		quick_sort(head, len-1);
 		return head;
 	}
 };
