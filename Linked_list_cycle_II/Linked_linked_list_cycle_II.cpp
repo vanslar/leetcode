@@ -55,6 +55,7 @@ public:
 			}
 
 			//存在cycle, slow_node_searcher一定在cycle中
+			//从head开始每个节点遍历，第一个在循环中的node为环的头
 			tmp = head;
 			while(tmp != node_searcher){
 				node_searcher = slow_node_searcher->next;
